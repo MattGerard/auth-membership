@@ -30,7 +30,9 @@ router.get('/:id/edit', (req, res) => {
 
 router.post('/', (req, res) => {
     validateTodoRenderError(req, res, (todo) => {
+        console.log(req, 'request within todo create')
         todo.date = new Date();
+        todo.user_id = req.user.uid;
         // insert to db with knex
         queries
             .create(todo)

@@ -26,15 +26,15 @@
 
 exports.seed = (knex, Promise) => {
   return knex('users').del()
-  // .then(() => {
-  //   return Promise.join(
-  //     knex('users').insert({
-  //       username: 'bteamgaming',
-  //       email: 'august@bteamgaming.com',
-  //       admin: true,
-  //     })
-  //   );
-  // })
+  .then(() => {
+    return Promise.join(
+      knex('users').insert({
+        username: 'bteamgaming',
+        email: 'august@bteamgaming.com',
+        admin: true,
+      })
+    );
+  })
   .then((res) => {
     console.log(res, 'response from seed 2nd')
     return Promise.join(

@@ -37,7 +37,8 @@ function createAccountClaim(uid, pid, accessToken, refreshToken, provider) {
 }
 
 function loginRequired(req, res, next) {
-  req.session.returnTo = req.path;
+  req.session.returnTo = req.originalUrl;
+  console.log(req.originalUrl, 'Look for full path')
   if (!req.user) return  res.redirect('/auth/login/');
   return next();
 }

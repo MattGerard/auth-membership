@@ -4,6 +4,7 @@ const validTodo = require('../../lib/validations').validTodo;
 const validId = require('../../lib/validations').validId;
 const queries = require('../db/queries');
 const setStatusRenderError = require('../../lib/responseHelpers');
+const authHelpers = require('../auth/_helpers');
 
 /* Router mounted at /todo . */
 router.get('/', (req, res, next) => {
@@ -14,7 +15,7 @@ router.get('/', (req, res, next) => {
         })
 });
 
-router.get('/new', (req, res) => {
+router.get('/new', authHelpers.loginRequired, (req, res) => {
     res.render('new');
 });
 
@@ -23,12 +24,12 @@ router.get('/:id', (req, res) => {
     respondAndRender(id, res, 'single');
 });
 
-router.get('/:id/edit', (req, res) => {
+router.get('/:id/edit', authHelpers.loginRequired, (req, res) => {
      const id = req.params.id;
     respondAndRender(id, res, 'edit');
 });
 
-router.post('/', (req, res) => {
+router.post('/', authHelpers.loginRequired, (req, res) => {
     validateTodoRenderError(req, res, (todo) => {
         console.log(req, 'request within todo create')
         todo.date = new Date();
@@ -43,7 +44,7 @@ router.post('/', (req, res) => {
     });
 });
 
-router.put('/:id', (req,res) => {
+router.put('/:id', authHelpers.loginRequired, (req,res) => {
     validateTodoRenderError(req, res, (todo) => {
         // insert to db with knex
         const id = req.params.id;
@@ -55,7 +56,7 @@ router.put('/:id', (req,res) => {
     });
 });
 
-router.delete('/:id/delete', (req, res) => {
+router.delete('/:id/delete', authHelpers.loginRequired, (req, res) => {
     const id = req.params.id;
     if (validId(id)) {
         queries
